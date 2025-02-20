@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Optimal Route Planner</title>
+    <script></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href = 'style.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
+
+</head>
+<body>
+<div class="flex-box">
+    <div class="flex-menu-item">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <span class="span-header">OptiRoute</span>
+            </div>
+            <div class="menu-bar">
+                <ul>
+                    <li class="search-box">
+                        <a href="#">
+                            <i class='bx bx-search icon'></i>
+                            <input id="search-input" type="search" placeholder="Find your company">
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="nav-text">DashBoard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-car icon'></i>
+                            <span class="nav-text">Distance on Road</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bxs-truck icon'></i>
+                            <span class="nav-text">VRP Problem Heuristic</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bxs-truck icon'></i>
+                            <span class="nav-text">VRP Problem Exact</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="flex-item">
+
+
+        <div class="grid-widget-item">
+            <h3>Add your company to map</h3>
+            <form id="addMarker-form">
+                <div class="li-pair">
+                    <label for="compName">Company Name:</label>
+                    <input type="text" id="compName">
+                </div>
+                <div class="li-pair">
+                    <label for="compAddress">Company Address:</label>
+                    <input type="text" id="compAddress">
+                </div>
+                <div class="li-pair">
+                    <label for="Latitude">Latitude:</label>
+                    <input type="number" id="Latitude" step="any">
+                </div>
+                <div class="li-pair">
+                    <label for="Longitude">Longitude:</label>
+                    <input type="number" id="Longitude" step="any">
+                </div>
+                <button type="submit">Confirm</button>
+            </form>
+        </div>
+        <div id="map"></div>
+        <div class="grid-widget-item2">
+            <form id="file-import-form">
+            <h3>Upload Points</h3>
+            <input type="file" id="companiesJSON" accept=".json">
+            <button type="submit">Import</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="dist/app.js"></script>
+</body>
+</html>

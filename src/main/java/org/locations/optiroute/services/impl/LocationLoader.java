@@ -4,11 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.locations.optiroute.entities.AddressEntity;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Getter
 public class LocationLoader {
@@ -17,20 +18,30 @@ public class LocationLoader {
     public LocationLoader(ObjectMapper mapper){
         this.mapper = mapper;
     }
-    public void loadData(){
+    public void loadJSON(){
         try {
             JsonNode jsonNode = mapper.readTree(new File("dane.json"));
             for (JsonNode node : jsonNode) {
-                String name = node.get("Nazwa").asText();
-                String street = node.get("Ulica").asText();
-                Double lat = node.get("Latitude").asDouble();
-                Double lon = node.get("Longitude").asDouble();
+                String name = node.get("name").asText();
+                String street = node.get("address").asText();
+                Double lat = node.get("lat").asDouble();
+                Double lon = node.get("lon").asDouble();
+                System.out.println(name);
                 AddressEntity addressEntity = new AddressEntity(street,name,lat,lon);
                 locations.put(name, addressEntity);
-                System.out.println(name);
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
+    }
+    public void writeToJSON(){
+        try{
+            List<AddressEntity> addressEntities = new ArrayList<>(locations.values());
+            mapper.writeValue(new File("dane.json"),addressEntities);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

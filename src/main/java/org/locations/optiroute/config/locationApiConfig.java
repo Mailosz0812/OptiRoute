@@ -21,7 +21,7 @@ public class locationApiConfig {
     @Bean
     public LocationLoader locationLoader(){
         LocationLoader loader = new LocationLoader(objectMapper());
-        loader.loadData();
+        loader.loadJSON();
         return loader;
     }
 }
