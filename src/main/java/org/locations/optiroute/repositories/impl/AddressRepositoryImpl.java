@@ -7,15 +7,15 @@ import org.locations.optiroute.repositories.AddressRepository;
 import org.locations.optiroute.services.impl.LocationLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class AddressRepositoryImpl implements AddressRepository {
     private LocationLoader loader;
     private Mapper<AddressEntity,AddressDTO> modelMapper;
 
-    public AddressRepositoryImpl(LocationLoader loader,Mapper<AddressEntity,AddressDTO> modelMapper) {
+    public AddressRepositoryImpl(LocationLoader loader, Mapper<AddressEntity,AddressDTO> modelMapper) {
         this.loader = loader;
         this.modelMapper = modelMapper;
     }
@@ -26,7 +26,7 @@ public class AddressRepositoryImpl implements AddressRepository {
     }
 
     @Override
-    public AddressEntity saveAddress(AddressEntity addressEntity) {
+    public AddressEntity saveAddress(AddressEntity addressEntity) throws IOException {
         AddressEntity address = loader.getLocations().put(addressEntity.getName(),addressEntity);
         loader.writeToJSON();
         return address;

@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Optimal Route Planner</title>
-    <script></script>
+    <title>Routing Machine</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href = 'style.css' rel='stylesheet'>
-    <link href='basestyle.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+    <link href = 'basestyle.css' rel='stylesheet'>
+    <link href = 'routestyle.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
 
@@ -63,8 +61,8 @@
 
 
         <div class="grid-widget-item">
-            <h3>Add your company to map</h3>
-            <form id="addMarker-form">
+            <h3>Choose points</h3>
+            <form id="chooseMarker-form">
                 <div class="li-pair">
                     <label for="compName">Company Name:</label>
                     <input type="text" id="compName">
@@ -81,19 +79,18 @@
                     <label for="Longitude">Longitude:</label>
                     <input type="number" id="Longitude" step="any">
                 </div>
+                <div class="li-pair">
+                <label for="pointType">Select point type:</label>
+                    <select id="pointType">
+                        <option value="start">Start</option>
+                        <option value="finish">Finish</option>
+                    </select>
                 <button type="submit">Confirm</button>
+                </div>
             </form>
         </div>
         <div id="map"></div>
-        <div class="grid-widget-item2">
-            <form id="file-import-form">
-            <h3>Upload Points</h3>
-            <input type="file" id="companiesJSON" accept=".json">
-            <button type="submit">Import</button>
-            </form>
-        </div>
     </div>
 </div>
-<script src="dist/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+#chooseMarker-form select {
+    padding: 3px;
+    font-size: 15px;
+    background-color: var(--widget-color);
+    outline: none;
+    border: none;
+    border-radius: 6px;
+}

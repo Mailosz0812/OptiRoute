@@ -1,13 +1,17 @@
 package org.locations.optiroute.controllers;
 
 
+import jakarta.validation.Valid;
 import org.locations.optiroute.Mappers.Mapper;
 import org.locations.optiroute.dto.AddressDTO;
 import org.locations.optiroute.entities.AddressEntity;
 import org.locations.optiroute.repositories.AddressRepository;
 import org.locations.optiroute.services.LocationManager;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -25,22 +29,27 @@ public class AddressController {
     }
     @CrossOrigin(origins = "http://localhost:63342")
     @PostMapping("/addAddress")
-    public AddressDTO addAddress(@RequestBody AddressDTO addressDTO){
-        AddressEntity addressEntity = modelMapper.mapFrom(addressDTO);
-        addressRepo.saveAddress(addressEntity);
-        System.out.println(addressEntity.getLat());
-        return modelMapper.mapTo(addressEntity);
+    public ResponseEntity<?> addAddress(@RequestBody @Valid AddressDTO addressDTO){
+        AddressEntity addressEntity = null;
+        try{
+            addressEntity = modelMapper.mapFrom(addressDTO);
+            addressRepo.saveAddress(addressEntity);
+            System.out.println(addressEntity.getLat());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Writing new Address to JSON file went wrong");
+        }
+        return ResponseEntity.ok(modelMapper.mapTo(addressEntity));
     }
     @CrossOrigin(origins = "http://localhost:63342")
     @GetMapping("/findByName")
-    public AddressDTO findAddressByName(@RequestParam String name){
+    public ResponseEntity<?> findAddressByName(@RequestParam String name){
         AddressEntity addressEntity = manager.findLocationByName(name);
-        return modelMapper.mapTo(addressEntity);
+        return ResponseEntity.ok(addressEntity);
     }
 
     @CrossOrigin(origins = "http://localhost:63342")
     @GetMapping("/getAllPoints")
-    public HashMap<String,AddressDTO> getAllPoints(){
-        return addressRepo.getAllAddresses();
+    public ResponseEntity<?> getAllPoints(){
+        return ResponseEntity.ok(addressRepo.getAllAddresses());
     }
 }

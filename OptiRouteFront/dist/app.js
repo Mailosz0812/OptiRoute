@@ -35,14 +35,54 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-var map = L.map('map').setView([51.112456681864735, 17.035963623937587], 13);
 var searching = document.querySelector("#search-input");
 var addMarkerForm = document.querySelector("#addMarker-form");
+var fileImportForm = document.querySelector("#file-import-form");
+var map = L.map('map').setView([51.112456681864735, 17.035963623937587], 13);
 var markers = L.markerClusterGroup();
 var points = [];
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
+fileImportForm.addEventListener("submit", function (event) { return __awaiter(_this, void 0, void 0, function () {
+    var fileInput, files, file, formData, response, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                event.preventDefault();
+                fileInput = document.querySelector("#companiesJSON");
+                files = fileInput.files;
+                if (!files || files.length === 0)
+                    return [2 /*return*/];
+                file = files[0];
+                formData = new FormData();
+                formData.append('file', file);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, fetch('http://localhost:8080/uploadJSON', {
+                        method: 'POST',
+                        body: formData
+                    })];
+            case 2:
+                response = _a.sent();
+                if (!response.ok) {
+                    console.log(response.status);
+                    throw new Error("Http error".concat(response.status));
+                }
+                console.log('Success');
+                return [4 /*yield*/, getAllPoints()];
+            case 3:
+                _a.sent();
+                return [3 /*break*/, 5];
+            case 4:
+                error_1 = _a.sent();
+                console.log('Error ', error_1);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
 addMarkerForm.addEventListener("submit", function (event) { return __awaiter(_this, void 0, void 0, function () {
     var nameInput, addressInput, latitudeInput, longitudeInput, postAddressData, response, responseData, marker, Error_1;
     return __generator(this, function (_a) {
@@ -96,39 +136,59 @@ addMarkerForm.addEventListener("submit", function (event) { return __awaiter(_th
         }
     });
 }); });
+function clearMap() {
+    map.eachLayer(function (layer) {
+        if (!(layer instanceof L.TileLayer)) {
+            map.removeLayer(layer);
+        }
+    });
+}
+function getAllPoints() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, data, companies, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch('http://localhost:8080/getAllPoints')];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok)
+                        throw new Error("HTTP ".concat(response.status));
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    companies = Object.values(data);
+                    clearMap();
+                    companies.forEach(function (company) {
+                        var marker = L.marker([company.lat, company.lon])
+                            .bindPopup("<b>".concat(company.name, "</b><br>").concat(company.address));
+                        markers.addLayer(marker);
+                        points.push(marker);
+                    });
+                    map.addLayer(markers);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _a.sent();
+                    console.error('Initial load error:', error_2);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
 document.addEventListener('DOMContentLoaded', function () { return __awaiter(_this, void 0, void 0, function () {
-    var response, data, companies, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, fetch('http://localhost:8080/getAllPoints')];
+            case 0: return [4 /*yield*/, getAllPoints()];
             case 1:
-                response = _a.sent();
-                if (!response.ok)
-                    throw new Error("HTTP ".concat(response.status));
-                return [4 /*yield*/, response.json()];
-            case 2:
-                data = _a.sent();
-                companies = Object.values(data);
-                companies.forEach(function (company) {
-                    var marker = L.marker([company.lat, company.lon])
-                        .bindPopup("<b>".concat(company.name, "</b><br>").concat(company.address));
-                    markers.addLayer(marker);
-                    points.push(marker);
-                });
-                map.addLayer(markers);
-                return [3 /*break*/, 4];
-            case 3:
-                error_1 = _a.sent();
-                console.error('Initial load error:', error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                _a.sent();
+                return [2 /*return*/];
         }
     });
 }); });
 searching.addEventListener("keydown", function (event) { return __awaiter(_this, void 0, void 0, function () {
-    var searchTerm, company_1, error_2;
+    var searchTerm, company_1, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -150,8 +210,8 @@ searching.addEventListener("keydown", function (event) { return __awaiter(_this,
                 map.setView([company_1.lat, company_1.lon], 19);
                 return [3 /*break*/, 4];
             case 3:
-                error_2 = _a.sent();
-                console.error('Search error:', error_2);
+                error_3 = _a.sent();
+                console.error('Search error:', error_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

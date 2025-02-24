@@ -22,8 +22,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 fileImportForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const fileInput: HTMLInputElement = document.querySelector("#companiesJSON");
+    const files: FileList = fileInput.files;
+    if(!files || files.length === 0) return;
 
+    const file = files[0];
 
+    const formData = new FormData();
+    formData.append('file',file);
+    try{
+        const response = await fetch('http://localhost:8080/uploadJSON',{
+            method: 'POST',
+            body: formData
+        })
+        if(!response.ok){
+            console.log(response.status);
+            throw new Error(`Http error${response.status}`);
+        }
+        console.log('Success');
+        await getAllPoints();
+    }catch (error) {
+        console.log('Error ',error);
+    }
 });
 
 
@@ -67,13 +86,23 @@ addMarkerForm.addEventListener("submit", async (event) => {
     addMarkerForm.reset();
 
 });
-document.addEventListener('DOMContentLoaded', async () => {
+
+function clearMap() {
+    map.eachLayer((layer) => {
+        if (!(layer instanceof L.TileLayer)) {
+            map.removeLayer(layer);
+        }
+    });
+}
+
+async function getAllPoints() {
     try {
         const response = await fetch('http://localhost:8080/getAllPoints');
 
-        if(!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         const companies: Address[] = Object.values(data);
+        clearMap();
         companies.forEach(company => {
             const marker = L.marker([company.lat, company.lon])
                 .bindPopup(`<b>${company.name}</b><br>${company.address}`);
@@ -85,6 +114,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Initial load error:', error);
     }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await getAllPoints();
 });
 
 searching.addEventListener("keydown", async (event) => {
@@ -106,14 +139,6 @@ searching.addEventListener("keydown", async (event) => {
     }
 });
 
-function fileHandler(inputFile: HTMLInputElement){
-    const files: FileList = inputFile.files;
-    if(!files || files.length === 0){
-        alert('No files selected');
-        return;
-    }
-
-}
 async function getPoint(url: string): Promise<Address> {
     const response = await fetch(url);
     if(!response.ok) throw new Error(`HTTP ${response.status}`);

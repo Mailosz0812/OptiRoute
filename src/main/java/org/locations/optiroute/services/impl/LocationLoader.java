@@ -3,6 +3,7 @@ package org.locations.optiroute.services.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
+import lombok.Setter;
 import org.locations.optiroute.entities.AddressEntity;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
+@Setter
 public class LocationLoader {
     private HashMap<String, AddressEntity> locations = new HashMap<>();
     private ObjectMapper mapper;
@@ -34,14 +36,8 @@ public class LocationLoader {
             throw new RuntimeException(e);
         }
     }
-    public void writeToJSON(){
-        try{
+    public void writeToJSON() throws IOException{
             List<AddressEntity> addressEntities = new ArrayList<>(locations.values());
             mapper.writeValue(new File("dane.json"),addressEntities);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 }

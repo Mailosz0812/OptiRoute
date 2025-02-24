@@ -3,13 +3,12 @@ package org.locations.optiroute.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class AddressDTO {
     @NotBlank(message = "Address is required")
     private String address;
@@ -18,8 +17,8 @@ public class AddressDTO {
     private String name;
 
     @NotNull(message = "Latitude is required")
-    private Double Lat;
+    private Double lat;
 
     @NotNull(message = "Longitude is required")
-    private Double Lon;
+    private Double lon;
 }
