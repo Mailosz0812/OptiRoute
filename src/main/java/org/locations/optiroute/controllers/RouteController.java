@@ -23,7 +23,7 @@ public class RouteController {
         this.routeManager = routeManager;
         this.mapper = mapper;
     }
-
+    @CrossOrigin(origins = "http://localhost:63342")
     @PostMapping("/routing")
     public ResponseEntity<?> getRoute(@RequestBody @Valid routeRequest request){
         AddressDTO startAddress = request.getStartAddress();

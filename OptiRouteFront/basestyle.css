@@ -20,6 +20,29 @@ body{
     height: 100vh;
     background:var(--body-color)
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/*input:-webkit-autofill{*/
+/*    background-color: var(--widget-color);*/
+/*}*/
+ input:-webkit-autofill,
+ input:-webkit-autofill:hover,
+ input:-webkit-autofill:focus,
+ textarea:-webkit-autofill,
+ textarea:-webkit-autofill:hover,
+ textarea:-webkit-autofill:focus,
+ select:-webkit-autofill,
+ select:-webkit-autofill:hover,
+ select:-webkit-autofill:focus {
+     border: 1px solid var(--widget-color);
+     -webkit-text-fill-color: #F1F1F1;
+     -webkit-box-shadow: 0 0 0px 1000px var(--widget-color) inset;
+     transition: background-color 5000s ease-in-out 0s;
+ }
+
 .flex-box{
     display: flex;
     justify-content: space-between;
@@ -83,8 +106,15 @@ body{
     grid-gap: 40px;
     grid-template-columns: 1fr 2fr;
 }
+.flex-item button{
+    color: white;
+    background-color: var(--widget-color);
+}
+.flex-item button:hover{
+    background-color: #2A8D87;
+}
 .grid-widget-item {
-    font-weight: 300;
+    font-weight: bold;
     padding: 20px;
     color: white;
     background-color: var(--sidebarbackground-color);
@@ -93,6 +123,7 @@ body{
 }
 .grid-widget-item input {
     padding: 3px;
+    margin-top: 5px;
     font-size: 15px;
     background-color:var(--widget-color);
     outline: none;
@@ -122,8 +153,6 @@ body{
     border-color: white;
     border-style: none;
     outline: none;
-    color: white;
-    background-color: var(--widget-color);
     padding: 5px 20px 5px 20px;
     min-width: 40px;
 }

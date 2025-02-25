@@ -29,10 +29,6 @@
 .li-pair label{
     font-size: 15px;
 }
-.grid-widget-item form button:hover
-,.grid-widget-item2 form button:hover{
-    background-color: #2A8D87;
-}
 .grid-widget-item2{
     font-weight: 300;
     padding: 20px;

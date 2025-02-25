@@ -1,23 +1,6 @@
-declare const L: any;
-
-interface Address {
-    address: string;
-    name: string;
-    lat: number;
-    lon: number;
-}
-
 const searching: HTMLInputElement = document.querySelector("#search-input");
 const addMarkerForm: HTMLFormElement = document.querySelector("#addMarker-form");
 const fileImportForm: HTMLFormElement = document.querySelector("#file-import-form");
-
-const map = L.map('map').setView([51.112456681864735, 17.035963623937587], 13);
-const markers = L.markerClusterGroup();
-let points: any = [];
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
-
 
 fileImportForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -35,7 +18,7 @@ fileImportForm.addEventListener("submit", async (event) => {
             body: formData
         })
         if(!response.ok){
-            console.log(response.status);
+            console.log(response.body);
             throw new Error(`Http error${response.status}`);
         }
         console.log('Success');
@@ -87,38 +70,11 @@ addMarkerForm.addEventListener("submit", async (event) => {
 
 });
 
-function clearMap() {
-    map.eachLayer((layer) => {
-        if (!(layer instanceof L.TileLayer)) {
-            map.removeLayer(layer);
-        }
-    });
-}
-
-async function getAllPoints() {
-    try {
-        const response = await fetch('http://localhost:8080/getAllPoints');
-
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        const companies: Address[] = Object.values(data);
-        clearMap();
-        companies.forEach(company => {
-            const marker = L.marker([company.lat, company.lon])
-                .bindPopup(`<b>${company.name}</b><br>${company.address}`);
-            markers.addLayer(marker);
-            points.push(marker);
-        });
-        map.addLayer(markers);
-
-    } catch (error) {
-        console.error('Initial load error:', error);
-    }
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
     await getAllPoints();
 });
+
+
 
 searching.addEventListener("keydown", async (event) => {
     if(event.key === "Enter") {

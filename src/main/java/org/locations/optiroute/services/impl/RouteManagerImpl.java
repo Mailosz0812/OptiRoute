@@ -1,5 +1,6 @@
 package org.locations.optiroute.services.impl;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.locations.optiroute.dto.AddressDTO;
 import org.locations.optiroute.dto.RouteDTO;
 import org.locations.optiroute.entities.AddressEntity;
@@ -27,7 +28,7 @@ public class RouteManagerImpl implements RouteManager {
         buildURL.append(vehicle);
         buildURL.append("/");
         String urlString = String.format("%s%s,%s;%s,%s?overview=full&geometries=geojson",
-                buildURL,start.getLat(),start.getLon(),finish.getLat(),finish.getLon());
+                buildURL,start.getLon(),start.getLat(),finish.getLon(),finish.getLat());
         System.out.println(urlString);
         String response = getResponse(urlString);
         RouteDTO routeDTO = constructRouteDTO(start,finish,response);
@@ -36,6 +37,8 @@ public class RouteManagerImpl implements RouteManager {
 
     private String getResponse(String urlString) throws IOException {
         URL url = new URL(urlString);
+        StringBuilder output = new StringBuilder();
+
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept","application/json");
@@ -48,7 +51,6 @@ public class RouteManagerImpl implements RouteManager {
                 );
             }
 
-            StringBuilder output = new StringBuilder();
             try (BufferedReader buffer = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
                 String line;
                 while ((line = buffer.readLine()) != null) {
