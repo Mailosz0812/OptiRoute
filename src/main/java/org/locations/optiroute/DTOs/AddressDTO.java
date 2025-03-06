@@ -1,4 +1,4 @@
-package org.locations.optiroute.dto;
+package org.locations.optiroute.DTOs;
 
 
 import jakarta.validation.constraints.NotBlank;

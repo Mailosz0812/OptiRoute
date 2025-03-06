@@ -1,13 +1,14 @@
 package org.locations.optiroute.repositories;
 
-import org.locations.optiroute.dto.AddressDTO;
 import org.locations.optiroute.entities.AddressEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Optional;
 
-public interface AddressRepository {
-    AddressEntity saveAddress(AddressEntity addressEntity) throws IOException;
-    HashMap<String,AddressDTO> getAllAddresses();
+@Repository
+public interface AddressRepository extends JpaRepository<AddressEntity,Long> {
+    Optional<AddressEntity> findByNAME(String name);
+
 }

@@ -1,11 +1,15 @@
 package org.locations.optiroute.services;
 
-import org.locations.optiroute.dto.AddressDTO;
-import org.locations.optiroute.dto.RouteDTO;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.locations.optiroute.entities.AddressEntity;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public interface RouteManager {
-    RouteDTO findRoute(AddressDTO start, AddressDTO finish, String type, String vehicle) throws IOException;
+    JsonNode findRoute(List<AddressEntity> addressEntities, String type, String vehicle) throws IOException;
+    List<AddressEntity> findTspProblemExactSolution(AddressEntity depotAddressEntity, List<AddressEntity> addressEntityList) throws IOException;
+    List<AddressEntity> findTspProblemApproximateSolution(List<AddressEntity> addressEntities,AddressEntity depot) throws IOException;
+
 }

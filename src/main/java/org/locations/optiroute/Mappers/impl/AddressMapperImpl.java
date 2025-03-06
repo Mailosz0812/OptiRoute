@@ -1,12 +1,12 @@
 package org.locations.optiroute.Mappers.impl;
 
 import org.locations.optiroute.Mappers.Mapper;
-import org.locations.optiroute.dto.AddressDTO;
+import org.locations.optiroute.DTOs.AddressDTO;
 import org.locations.optiroute.entities.AddressEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -32,42 +32,20 @@ public class AddressMapperImpl implements Mapper<AddressEntity, AddressDTO> {
     }
 
     @Override
-    public HashMap<String, AddressDTO> mapToAll(HashMap<String, AddressEntity> addressesMap) {
-        HashMap<String, AddressDTO> addressDTOHashMap = new HashMap<>();
-        for (String s : addressesMap.keySet()) {
-            AddressEntity addrEntity = addressesMap.get(s);
-            addressDTOHashMap.put(s,mapTo(addrEntity));
+    public List<AddressDTO> mapToList(List<AddressEntity> addressesList) {
+        List<AddressDTO> addressDTOList = new ArrayList<>();
+        for (AddressEntity addressEntity : addressesList) {
+            addressDTOList.add(mapTo(addressEntity));
         }
-        return addressDTOHashMap;
+        return addressDTOList;
     }
 
     @Override
-    public HashMap<String, AddressEntity> mapFromAll(List<AddressDTO> addressDTOList) {
-        HashMap<String,AddressEntity> addressEntityHashMap = new HashMap<>();
-        for (AddressDTO addressDTO : addressDTOList) {
-            AddressEntity addressEntity = mapFrom(addressDTO);
-            addressEntityHashMap.put(addressEntity.getName(),addressEntity);
+    public List<AddressEntity> mapFromList(List<AddressDTO> addressesList) {
+        List<AddressEntity> addressEntityList = new ArrayList<>();
+        for (AddressDTO addressDTO : addressesList) {
+            addressEntityList.add(mapFrom(addressDTO));
         }
-        return addressEntityHashMap;
-    }
-
-    @Override
-    public HashMap<String, AddressDTO> mapToAll(List<AddressEntity> addressEntityList) {
-        HashMap<String,AddressDTO> addressDTOHashMap = new HashMap<>();
-        for (AddressEntity addressEntity : addressEntityList) {
-            AddressDTO addressDTO = mapTo(addressEntity);
-            addressDTOHashMap.put(addressDTO.getName(),addressDTO);
-        }
-        return addressDTOHashMap;
-    }
-
-    @Override
-    public HashMap<String, AddressEntity> mapFromAll(HashMap<String, AddressDTO> addressesMap) {
-        HashMap<String, AddressEntity> addressEntityHashMap = new HashMap<>();
-        for (String s : addressesMap.keySet()) {
-            AddressDTO addrDTO = addressesMap.get(s);
-            addressEntityHashMap.put(s,mapFrom(addrDTO));
-        }
-        return addressEntityHashMap;
+        return addressEntityList;
     }
 }

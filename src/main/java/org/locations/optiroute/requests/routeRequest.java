@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.locations.optiroute.dto.AddressDTO;
+import org.locations.optiroute.DTOs.AddressDTO;
 
 
 @NoArgsConstructor

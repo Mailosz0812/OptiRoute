@@ -1,13 +1,16 @@
 package org.locations.optiroute.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.locations.optiroute.services.impl.LocationLoader;
+import org.locations.optiroute.DTOs.UserDTO;
+import org.locations.optiroute.Mappers.Mapper;
+import org.locations.optiroute.entities.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-public class locationApiConfig {
+public class BeanConfig {
 
     @Bean
     public ModelMapper modelMapper(){
@@ -19,9 +22,8 @@ public class locationApiConfig {
     }
 
     @Bean
-    public LocationLoader locationLoader(){
-        LocationLoader loader = new LocationLoader(objectMapper());
-        loader.loadJSON();
-        return loader;
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
+
 }

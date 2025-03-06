@@ -109,7 +109,9 @@ findRouteButton.addEventListener("click", function (event) { return __awaiter(_t
             case 0:
                 event.preventDefault();
                 if (vehicleType.length === 0) {
-                    alert("Choose Vehicle");
+                    return [2 /*return*/];
+                }
+                if (addressArray.length !== 2) {
                     return [2 /*return*/];
                 }
                 requestBody = {
@@ -137,7 +139,7 @@ findRouteButton.addEventListener("click", function (event) { return __awaiter(_t
                 return [4 /*yield*/, response.json()];
             case 3:
                 responseData = _a.sent();
-                routingResponse = JSON.parse(responseData.routingResponse);
+                routingResponse = responseData.routingResponse;
                 routeCoordinates = routingResponse.routes[0].geometry.coordinates.map(function (cord) { return [cord[1], cord[0]]; });
                 L.polyline(routeCoordinates, {
                     color: 'blue',
@@ -159,4 +161,5 @@ clearMapButton.addEventListener("click", function (event) {
     bikeButton.style.background = "#0B64AD";
     carButton.style.background = "#0B64AD";
     vehicleType = "";
+    isFetching = false;
 });
